@@ -24,7 +24,6 @@ class CylinderTests {
     @Test
     void getNormal() {
 //        Cylinder cl = new Cylinder(3.0, new Ray(new Point(1,2,3), new Vector(1, 1, 1)), 5);
-
     }
 
 
