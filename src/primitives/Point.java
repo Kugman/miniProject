@@ -1,7 +1,6 @@
 package primitives;
-
 /**
- * basic point for RayTracing project
+ * basic point for project
  *
  * @author Efrat Kugman
  */
