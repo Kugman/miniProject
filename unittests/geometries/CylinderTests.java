@@ -5,17 +5,33 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CylinderTests {
-//    Cylinder cylinder = new Cylinder()
+
+    Point point = new Point(1, 2, 3);
+    Vector vector = new Vector(1, 1, 1);
+    Ray ray = new Ray(point, vector);
+    Cylinder cylinder = new Cylinder(3, ray, 5);
+
+    /**
+     * Test method for {@link geometries.Cylinder#Cylinder(double,Ray, double)}.
+     */
+    @Test
+    void Cylinder(){
+        try{
+            Cylinder c = new Cylinder(3, ray, 5);
+        }catch (IllegalArgumentException e) {
+            fail("Failed constructing a correct Cylinder");
+        }
+    }
 
     /**
      * Test method for {@link geometries.Cylinder#getHeight()}.
      */
     @Test
     void getHeight() {
-        fail("Not yet implemented");
+        assertEquals(cylinder.getHeight(), 5, "ERROR: cylynder getHeight() does not work correctly");
     }
 
     /**
@@ -23,8 +39,27 @@ class CylinderTests {
      */
     @Test
     void getNormal() {
-//        Cylinder cl = new Cylinder(3.0, new Ray(new Point(1,2,3), new Vector(1, 1, 1)), 5);
+        Cylinder c = new Cylinder(3, new Ray(new Point(0, 0, 0), new Vector(1, 0, 0)), 5);
+        // ============ Equivalence Partitions Tests ==============
+        //TEST FOR CYLINDER PLANE
+        Vector v1 = new Vector(0.0, 0.7071067811865475, 0.7071067811865475);
+        assertEquals(v1, c.getNormal(new Point(0, Math.sqrt(9 / 2), Math.sqrt(9 / 2))), "getNormal() result is not expected");
+
+        // =============== Boundary Values Tests ==================
+        //When connecting the point to the head of the ray of the cylinder axis produces a right angle with the axis - the point "is in front of the head of the ray")
+        Vector v = new Vector(0, 1, 0);
+        //o	The first and second points are equal.
+        assertTrue(v.equals(c.getNormal(new Point(0, 3, 0))), "getNormal() result is not expected");
+        //o	The points are all on the same line
+        assertEquals(v, c.getNormal(new Point(0, 3, 0)), "getNormal() result is not expected");
     }
 
 
+    /**
+     * Test method for {@link Cylinder#toString()}.
+     */
+    @Test
+    void testToString(){
+        System.out.println("the cylinder is: " + cylinder);
+    }
 }

@@ -12,11 +12,35 @@ class VectorTests {
     Vector v3 = new Vector(0, 3, -2);
 
     /**
-     * Test method for {@link primitives.Vector#subtract(Point)}.
+     * Test method for {@link primitives.Vector#Vector(double, double, double)} .
      */
     @Test
-    void subtract() {
-        fail("Not yet implemented");
+    void vectorConstructor1() {
+        try{
+            Vector tmp = new Vector(1, 0 , 5);
+        }catch (IllegalArgumentException e) {
+            fail("Failed constructing a correct Vector");
+        }
+        assertThrows(IllegalArgumentException.class, //
+                () -> new Vector(0, 0, 0), //
+                "Vector constructor should throw exception for zero");
+    }
+
+    /**
+     * Test method for {@link primitives.Vector#Vector(Double3)}  .
+     */
+    @Test
+    void vectorConstructor2() {
+        try{
+            Double3 vectorVals = new Double3(1, 1, 1);
+            Vector tmp = new Vector(vectorVals);
+        }catch (IllegalArgumentException e) {
+            fail("Failed constructing a correct Vector");
+        }
+        Double3 vectorVals = new Double3(0, 0, 0);
+        assertThrows(IllegalArgumentException.class, //
+                () -> new Vector(vectorVals), //
+                "Vector constructor should throw exception for zero");
     }
 
     /**
@@ -24,7 +48,8 @@ class VectorTests {
      */
     @Test
     void add() {
-        fail("Not yet implemented");
+        Vector res = new Vector(1, 5, 1);
+        assertEquals(res, v1.add(v3), "ERROR: add() return wrong value");
     }
 
     /**
@@ -34,6 +59,7 @@ class VectorTests {
     void testToString() {
         System.out.println("the first vector is: " + v1);
         System.out.println("the second vector is: " + v2);
+        System.out.println("the third vector is: " + v3);
     }
 
     /**
@@ -41,7 +67,9 @@ class VectorTests {
      */
     @Test
     void scale() {
-        fail("Not yet implemented");
+        double val = 3.5;
+        Vector res = new Vector(v1.point.scale(val));
+        assertEquals(res, v1.scale(val));
     }
 
     /**
@@ -51,8 +79,8 @@ class VectorTests {
     void dotProduct() {
         // =============== Boundary Values Tests ==================
         // test if dot product return 0 in case that the vectors are ortogonal
-        assertFalse(isZero(v1.dotProduct(v3)), "ERROR: dotProduct() for orthogonal vectors is not zero");
-        assertFalse(isZero(v1.dotProduct(v2) + 28), "ERROR: dotProduct() wrong value");
+        assertTrue(isZero(v1.dotProduct(v3)), "ERROR: dotProduct() for orthogonal vectors is not zero");
+        assertTrue(isZero(v1.dotProduct(v2) + 28), "ERROR: dotProduct() wrong value");
     }
 
     /**
@@ -66,8 +94,8 @@ class VectorTests {
         } catch (Exception e) {
         }
         Vector vr = v1.crossProduct(v3);
-        assertFalse(isZero(vr.length() - v1.length() * v3.length()), "ERROR: crossProduct() wrong result length");
-        assertFalse((isZero(vr.dotProduct(v1)) || !isZero(vr.dotProduct(v3))), "ERROR: crossProduct() result is not orthogonal to its operands");
+        assertTrue(isZero(vr.length() - v1.length() * v3.length()), "ERROR: crossProduct() wrong result length");
+        assertTrue((isZero(vr.dotProduct(v1)) || !isZero(vr.dotProduct(v3))), "ERROR: crossProduct() result is not orthogonal to its operands");
     }
 
     /**
@@ -76,7 +104,7 @@ class VectorTests {
     @Test
     void lengthSquared() {
         // ============ Equivalence Partitions Tests ==============
-        assertFalse(isZero(v1.lengthSquared() - 14), "ERROR: lengthSquared() wrong value");
+        assertTrue(isZero(v1.lengthSquared() - 14), "ERROR: lengthSquared() wrong value");
     }
 
     /**
@@ -85,7 +113,7 @@ class VectorTests {
     @Test
     void length() {
         // ============ Equivalence Partitions Tests ==============
-        assertFalse(isZero(new Vector(0, 3, 4).length() - 5), "ERROR: length() wrong value");
+        assertTrue(isZero(new Vector(0, 3, 4).length() - 5), "ERROR: length() wrong value");
     }
 
     /**
@@ -95,7 +123,7 @@ class VectorTests {
     void normalize() {
         Vector v = new Vector(1, 2, 3);
         Vector u = v.normalize();
-        assertFalse(isZero(u.length() - 1), "ERROR: the normalized vector is not a unit vector");
+        assertTrue(isZero(u.length() - 1), "ERROR: the normalized vector is not a unit vector");
         try { // test that the vectors are co-lined
             v.crossProduct(u);
             out.println("ERROR: the normalized vector is not parallel to the original one");

@@ -49,7 +49,8 @@ public class Double3 {
 		return (int) Math.round(d1 + d2 + d3);
 	}
 
-	public double doubleHashCode() { return d1 + d2 + d3; }
+	public double doubleHashCode() {
+		return ((double) (((double) d1) + ((double) d2) + ((double) d3))); }
 
 	@Override
 	public String toString() {

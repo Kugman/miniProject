@@ -1,5 +1,6 @@
 package primitives;
 
+import geometries.Polygon;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,9 @@ class PointTests {
     @Test
     void subtract() {
         assertEquals(new Vector(1,1,1), (new Point(2,3,4).subtract(p1)), "ERROR: Point - Point does not work correctly");
+        assertThrows(IllegalArgumentException.class, //
+                () -> p1.subtract(p1), //
+                "substruct cannt work on 2 equals points");
     }
 
     /**

@@ -18,7 +18,11 @@ class PlaneTest {
      */
     @Test
     public void testConstructor(){
-        fail("Not yet implemented");
+        try{
+            Plane p = new Plane(new Point(1, 1, 1), new Point(1, 2, 3), new Point(2, 2, 2));
+        }catch (IllegalArgumentException e) {
+            fail("Failed constructing a correct plane");
+        }
     }
 
     /**
@@ -26,7 +30,11 @@ class PlaneTest {
      */
     @Test
     public void testConstructor2(){
-        fail("Not yet implemented");
+        try{
+            Plane p = new Plane(new Point(1, 1, 1), new Vector(1, 1, 1));
+        }catch (IllegalArgumentException e) {
+            fail("Failed constructing a correct plane");
+        }
     }
 
     /**
@@ -34,7 +42,9 @@ class PlaneTest {
      */
     @Test
     void getVector() {
-        fail("Not yet implemented");
+        Vector v1 = point2.subtract(point1);
+        Vector v2 = point3.subtract(point1);
+        assertEquals( plane.getVector(), v1.crossProduct(v2).normalize(),"ERROR: getVector does not work propertly");
     }
 
     /**
@@ -42,7 +52,7 @@ class PlaneTest {
      */
     @Test
     void getPoint() {
-        fail("Not yet implemented");
+        assertEquals(plane.getPoint(), point1, "ERROR: getPoint() does not work propertly");
     }
 
     /**
