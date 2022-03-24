@@ -64,4 +64,9 @@ public class Polygon implements Geometry {
 				plane.toString()	+
 				"}";
 	}
+
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		return null;
+	}
 }

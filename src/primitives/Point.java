@@ -55,4 +55,17 @@ public class Point {
         return (this.point.equals(other.point));
     }
 
+
+    public double getX() {
+        return point.d1;
+    }
+
+    public double getY() {
+        return point.d2;
+    }
+
+    public double getZ() {
+        return point.d3;
+    }
+
 }

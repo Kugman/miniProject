@@ -1,6 +1,12 @@
 package geometries;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static primitives.Util.isZero;
 
 /**
  * Plane Class
@@ -50,4 +56,27 @@ public class Plane implements Geometry {
 				this.normal.toString()	+
 				"}";
 	}
+
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+
+		//data of the ray
+        Point P0 = ray.getStartPoint();
+        Vector v = ray.getDirectionVector();
+
+		//if the intersaction point is q0
+        if (q0.equals(P0)) //Returns an unmodifiable list containing one element-q0
+            return List.of(q0);
+
+        double nv = normal.dotProduct(v);
+        //check if 0 in the denominator-n and v orthogonal
+        //the ray is lying on the plane
+        if (isZero(nv)) return null;
+
+        //if everything good-calculate p
+        double t = normal.dotProduct(q0.subtract(P0));
+        t /= nv;
+        Point p = ray.getPoint(t);
+        return List.of(p);
+    }
 }

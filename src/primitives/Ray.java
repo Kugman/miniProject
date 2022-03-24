@@ -15,6 +15,10 @@ public class Ray {
         this.directionVector = directionVector.normalize();
     }
 
+    public Point getPoint(double t){
+        return startPoint.add(directionVector.scale(t));
+    }
+
     public Point getStartPoint() {
         return startPoint;
     }
