@@ -33,4 +33,12 @@ public class Ray {
                 directionVector.toString()  +
                 "}";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ray ray = (Ray) o;
+        return startPoint.equals(ray.startPoint) && directionVector.equals(ray.directionVector);
+    }
 }
