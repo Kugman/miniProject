@@ -12,7 +12,7 @@ import static primitives.Util.*;
  * @author Efrat Kugman
  */
 
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
 
 	protected List<Point> vertices;
 	protected Plane plane;
@@ -67,6 +67,11 @@ public class Polygon implements Geometry {
 
 	@Override
 	public List<Point> findIntersections(Ray ray) {
+		return null;
+	}
+
+	@Override
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
 		return null;
 	}
 }
