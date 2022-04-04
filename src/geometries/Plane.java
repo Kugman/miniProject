@@ -58,36 +58,6 @@ public class Plane extends Geometry {
 	}
 
 	@Override
-	public List<Point> findIntersections(Ray ray) {
-
-		//data of the ray
-        Point P0 = ray.getStartPoint();
-        Vector v = ray.getDirectionVector();
-
-		Vector n = normal;
-		//if the intersection point is q0
-        if (q0.equals(P0)) //Returns an unmodifiable list containing one element-q0
-            return null;
-
-		Vector P0_Q0 = q0.subtract(P0);
-		double numerator = alignZero(n.dotProduct(P0_Q0));
-
-		if (isZero(numerator)) return null;
-
-		double nv = alignZero(n.dotProduct(v));
-        //check if 0 in the denominator-n and v orthogonal
-        //the ray is lying on the plane
-        if (isZero(nv)) return null;
-
-        //if everything good-calculate p
-        double t = alignZero(numerator / nv);
-        if(t <= 0) return null;
-
-		Point p = ray.getPoint(t);
-        return List.of(p);
-    }
-
-	@Override
 	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
 
 		//data of the ray

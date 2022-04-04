@@ -48,22 +48,8 @@ public class Ray {
     }
 
     public Point findClosestPoint(List<Point> listOfPoints){
-
-        if(listOfPoints==null) return null;
-
-        Point result = null;
-
-        //double closestDistane=listOfPoints.get(0).distance(_p0);//זה הכי יפה בעיננו//
-        double closestDistane = Double.MAX_VALUE;
-
-        for (Point p :listOfPoints){
-            double tmp = p.distance(startPoint);
-            if(tmp <= closestDistane){
-                closestDistane = tmp;
-                result = p;
-            }
-        }
-        return result;
+        return listOfPoints == null || listOfPoints.isEmpty() ? null
+                : findClosestGeoPoint(listOfPoints.stream().map(p->new GeoPoint(null, p)).toList()).point;
     }
 
     public GeoPoint findClosestGeoPoint(List<GeoPoint> listOfPoints){
