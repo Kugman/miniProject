@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 /**
  * @author Efrat Kugman
  * /**
@@ -41,4 +43,24 @@ public class Ray {
         Ray ray = (Ray) o;
         return startPoint.equals(ray.startPoint) && directionVector.equals(ray.directionVector);
     }
+
+    public Point findClosestPoint(List<Point> listOfPoints){
+
+        if(listOfPoints==null) return null;
+
+        Point result = null;
+
+        //double closestDistane=listOfPoints.get(0).distance(_p0);//זה הכי יפה בעיננו//
+        double closestDistane = Double.MAX_VALUE;
+
+        for (Point p :listOfPoints){
+            double tmp = p.distance(startPoint);
+            if(tmp <= closestDistane){
+                closestDistane = tmp;
+                result = p;
+            }
+        }
+        return result;
+    }
+
 }

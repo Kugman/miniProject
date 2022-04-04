@@ -1,11 +1,13 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.MissingResourceException;
 
 import static primitives.Util.*;
 
@@ -24,7 +26,10 @@ public class Camera {
     private double distance;
     private int sizeGrid = 1;
 
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracerBase;
 
+    //-----------constructor-----------------//
     public Camera(Point location, Vector directionTo, Vector directionUp){
         this.location = location;
         this.directionTo = directionTo.normalize();
@@ -63,6 +68,17 @@ public class Camera {
         return this;
     }
 
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    public Camera setRayTracer(RayTracerBase rayTracerBase) {
+        this.rayTracerBase = rayTracerBase;
+        return this;
+    }
+
+    //------Camera operations------------------//
     public Ray constructRay(int nX, int nY, int j, int i) {
 
         //calculate pc
@@ -161,5 +177,36 @@ public class Camera {
         return Pij;
     }
 
+    public void renderImage(){
+        if(this.location == null) throw new MissingResourceException("missing value", "Point", "location");
+        if(this.directionRight == null) throw new MissingResourceException("missing value", "Vector", "directionRight");
+        if(this.directionUp == null) throw new MissingResourceException("missing value", "Vector", "directionUp");
+        if(this.directionTo == null) throw new MissingResourceException("missing value", "Vector", "directionTo");
+        if(this.imageWriter == null) throw new MissingResourceException("missing value", "ImageWriter", "imageWriter");
+        if(this.rayTracerBase == null) throw new MissingResourceException("missing value", "RayTracerBase", "rayTracerBase");
+//        throw new UnsupportedOperationException();
+
+        final int nX = imageWriter.getNx();
+        final int nY = imageWriter.getNy();
+
+        for (int i = 0; i < nY; ++i)
+            for (int j = 0; j < nX; ++j)
+                imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(nX, nY, j, i)));
+
+    }
+
+    public void printGrid(int interval, Color color){
+        if(this.imageWriter == null) throw new MissingResourceException("missing value", "ImageWriter", "imageWriter");
+        for (int i = 0; i < imageWriter.getNx(); i++)
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                if (i % interval == 0) this.imageWriter.writePixel(i, j, color);
+                else if (j % interval == 0) this.imageWriter.writePixel(i, j, color);
+            }
+    }
+
+    public void writeToImage(){
+        if(this.imageWriter == null) throw new MissingResourceException("missing value", "ImageWriter", "imageWriter");
+        this.imageWriter.writeToImage();
+    }
 
 }

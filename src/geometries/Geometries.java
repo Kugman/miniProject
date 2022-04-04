@@ -20,7 +20,7 @@ public class Geometries implements Intersectable{
     }
 
     public void add(Intersectable...geometries){
-        for (Intersectable item : intersectables)
+        for (Intersectable item : geometries)
             this.intersectables.add(item);
     }
 
