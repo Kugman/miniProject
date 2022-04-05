@@ -177,7 +177,7 @@ public class Camera {
         return Pij;
     }
 
-    public void renderImage(){
+    public Camera renderImage(){
         if(this.location == null) throw new MissingResourceException("missing value", "Point", "location");
         if(this.directionRight == null) throw new MissingResourceException("missing value", "Vector", "directionRight");
         if(this.directionUp == null) throw new MissingResourceException("missing value", "Vector", "directionUp");
@@ -192,7 +192,7 @@ public class Camera {
         for (int i = 0; i < nY; ++i)
             for (int j = 0; j < nX; ++j)
                 imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(nX, nY, j, i)));
-
+        return this;
     }
 
     public void printGrid(int interval, Color color){
