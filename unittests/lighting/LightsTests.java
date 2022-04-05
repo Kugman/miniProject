@@ -131,5 +131,64 @@ public class LightsTests {
 				.renderImage() //
 				.writeToImage(); //
 	}
+//-----------------------------My Tests-------------------------//
+
+	@Test
+	public void allLightsSphere() {
+		scene1.geometries.add(sphere);
+		Point pos;
+
+		Color red = new Color(255, 0, 0);
+		Point spPos = new Point(-50, -50, 50);
+		SpotLight sp = new SpotLight(red, spPos, new Vector(1, 1, -0.5));
+		sp.setKL(0.001).setKQ(0.0001);
+		scene1.lights.add(sp);
+
+		Color orange = new Color(255, 126, 0);
+		Point plPos = new Point(70, -50, 0);
+		PointLight pl = new PointLight(orange, plPos);
+		pl.setKL(0.001).setKQ(0.0002);
+		scene1.lights.add(pl);
+
+		Color yellow = new Color(255, 255, 0);
+		DirectionalLight dl = new DirectionalLight(yellow, trDL);
+		scene1.lights.add(dl);
+
+		ImageWriter imageWriter = new ImageWriter("allLightSphere", 500, 500);
+		camera1.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene1)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+
+	@Test
+	public void allLightsTriangles() {
+		scene2.geometries.add(triangle1, triangle2);
+
+		Color slCol = new Color(255, 0, 150);
+		Point slPos = new Point(50, 0, -100);
+		SpotLight sl = new SpotLight(slCol, slPos, trDL);
+		sl.setKL(0.001).setKQ(0.0001);
+		scene2.lights.add(sl);
+
+		Color plCol = new Color(150, 255, 150);
+		Point plPos = new Point(50, 30, -100);
+		PointLight pl = new PointLight(plCol, plPos);
+		pl.setKL(0.001).setKQ(0.0002);
+		scene2.lights.add(pl);
+
+		Color dlCol = new Color(255, 255, 0);
+		DirectionalLight dl = new DirectionalLight(dlCol, trDL);
+		scene2.lights.add(dl);
+
+		ImageWriter imageWriter = new ImageWriter("allLightsTriangles", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+
 
 }
