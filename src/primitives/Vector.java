@@ -28,7 +28,8 @@ public class Vector extends Point {
     }
 
     public Vector scale(double factor) {
-        return new Vector(this.point.scale(factor));
+        Double3 d = this.point.scale(factor);
+        return new Vector(d);
     }
 
     public double dotProduct(Vector v) {

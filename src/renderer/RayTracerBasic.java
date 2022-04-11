@@ -10,6 +10,7 @@ import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase{
 
+    private static final double DELTA = 0.1;
 
     /**
      * @param scene initialize field scene
@@ -36,9 +37,12 @@ public class RayTracerBasic extends RayTracerBase{
             Vector l = lightSource.getL(point.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)
-                Color iL = lightSource.getIntensity(point.point);
-                color = color.add(iL.scale(calcDiffusive(material.kD, nl)),
-                        iL.scale(calcSpecular(nl, material.kS, l, n, v, material.nShininess)));
+                if(unshaded(lightSource, point, l, n, nv)) {
+                    Color iL = lightSource.getIntensity(point.point);//.scale(DELTA);
+                    color = color.add(iL.scale(calcDiffusive(material.kD, nl)),
+                            iL.scale(calcSpecular(nl, material.kS, l, n, v, material.nShininess)));
+
+                }
             }
         }
         return color;
@@ -66,4 +70,31 @@ public class RayTracerBasic extends RayTracerBase{
         if(closestPoint == null) return scene.background;
         return calcColor(closestPoint, ray);
     }
+
+    private boolean unshaded(LightSource lightSource, GeoPoint gp, Vector l, Vector n, double nv) {
+        Vector lightDirection = l.scale(-1);
+
+        Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+        Point point = gp.point.add(epsVector);
+        Ray lightRay = new Ray(point,lightDirection);
+
+        // if(true) return false;
+        List<GeoPoint> intersections = scene.geometries
+                .findGeoIntersections(lightRay);//, lightSource.getDistance(gp.point));
+        if(intersections == null) return true;
+
+        double lightDistance = lightSource.getDistance(gp.point);
+        for (GeoPoint geoPoint : intersections) {
+            if (alignZero(geoPoint.point.distance(gp.point) - lightDistance) > 0)
+                return false;
+        }
+        return true;
+    }
+
+
+
+
+
+
+
 }

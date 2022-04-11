@@ -33,7 +33,7 @@ public class Triangle extends Polygon {
 	}
 
 	@Override
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
 		List<Point> list1 = this.plane.findIntersections(ray);
 
 		//IF THE PLANE HAS NO INTERSACTION POINTS-RETURN NULL
@@ -59,8 +59,11 @@ public class Triangle extends Polygon {
 		//if they all have the same sign-there is an intersaction
 		if(alignZero(t1) >0 && alignZero(t2)> 0 && alignZero(t3) > 0 ||
 				alignZero(t1)<0 && alignZero(t2) < 0 && alignZero(t3) < 0)
-			return List.of(new GeoPoint(this, this.plane.findGeoIntersectionsHelper(ray).get(0).point));
-
+			try {
+				return List.of(new GeoPoint(this, this.plane.findGeoIntersectionsHelper(ray, maxDistance).get(0).point));
+			}catch (Exception e){
+				return null;
+			}
 		return null;
 
 	}

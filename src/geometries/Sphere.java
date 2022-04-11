@@ -82,10 +82,11 @@ public class Sphere extends Geometry {
 	}
 
 	@Override
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
 		//calculating variables for the final formula
+
 		Point P0 = ray.getStartPoint();
-		Vector V = ray.getDirectionVector();
+		Vector V = ray.getDirectionVector();//.normalize();
 		Point O = center;
 
 		if(P0.equals(center)) return List.of(new GeoPoint(this, center.add(V.scale(radius))));
@@ -104,18 +105,32 @@ public class Sphere extends Geometry {
 		// if P is on the surface---
 		if(isZero(th)) return null;
 
+//		if(alignZero(t1 - maxDistance) > 0 ||
+//		alignZero(t2 - maxDistance) > 0) return null;
+
 		//in case of 2 intersection points
-		if(t1 > 0 && t2 > 0) //the first point and the second point
+		if(t1 > 0 && t2 > 0 && (alignZero(t1 - maxDistance) <= 0 &&
+				alignZero(t2 - maxDistance) <= 0)) //the first point and the second point
 			return List.of(new GeoPoint(this, ray.getPoint(t1)),
 					new GeoPoint(this, ray.getPoint(t2)));
 
 		//in case of 1 intersection points
-		if(t1 > 0) return List.of(new GeoPoint(this, ray.getPoint(t1)));
+		if(t1 > 0 && alignZero(t1 - maxDistance) <= 0) return List.of(new GeoPoint(this, ray.getPoint(t1)));
 
 		//in case of 1 intersection points
-		if(t2 > 0) return List.of(new GeoPoint(this, ray.getPoint(t2)));
+		if(t2 > 0 && alignZero(t2 - maxDistance) <= 0) {
+			try {
+				return List.of(new GeoPoint(this, ray.getPoint(t2)));
+			} catch (IllegalArgumentException e){
+				return null;
+			}
 
+		}
 		return null;
 
 	}
+
+
+
+
 }

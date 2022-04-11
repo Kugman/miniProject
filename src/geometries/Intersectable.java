@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Double3;
 import primitives.Point;
 import primitives.Ray;
 
@@ -47,11 +48,16 @@ public abstract class Intersectable {
     }
 
 
-    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
+//    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
-    public List<GeoPoint> findGeoIntersections(Ray ray){
-        return findGeoIntersectionsHelper(ray);
+    public final List<GeoPoint> findGeoIntersections(Ray ray){
+        return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
     }
 
+    public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance){
+        return findGeoIntersectionsHelper(ray, maxDistance);
+    }
+
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
 }
