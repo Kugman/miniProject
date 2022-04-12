@@ -22,11 +22,8 @@ class GeometriesTests {
      */
     @Test
     void Geometries(){
-        try {
-            Geometries geometries = new Geometries();
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing an empty Geometries object");
-        }
+        assertDoesNotThrow(()->new Geometries(),
+                "Failed constructing an empty Geometries object");
     }
 
     /**
@@ -39,11 +36,8 @@ class GeometriesTests {
         Point point3 = new Point(1, 1, 1);
         Triangle triangle = new Triangle(point1, point2, point3);
 
-        try{
-            Geometries geometries = new Geometries(triangle);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing correct Geometries object");
-        }
+        assertDoesNotThrow(()->new Geometries((triangle)),
+                "Failed constructing correct Geometries object");
     }
 
     /**
@@ -51,11 +45,7 @@ class GeometriesTests {
      */
     @Test
     void add() {
-        try{
-            geometries.add(triangle);
-        }catch (IllegalArgumentException e) {
-            fail("Failed to add a correct object");
-        }
+        assertDoesNotThrow(()->geometries.add(triangle), "Failed to add a correct object");
     }
 
     /**

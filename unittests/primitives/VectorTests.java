@@ -15,14 +15,10 @@ class VectorTests {
      * Test method for {@link primitives.Vector#Vector(double, double, double)} .
      */
     @Test
-    void vectorConstructor1() {
-        try{
-            Vector tmp = new Vector(1, 0 , 5);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct Vector");
-        }
-        assertThrows(IllegalArgumentException.class, //
-                () -> new Vector(0, 0, 0), //
+    void vectorConstructorDoubles() {
+        assertDoesNotThrow(()-> new Vector(1, 0, 5),
+                "Failed constructing a correct Vector");
+        assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0),
                 "Vector constructor should throw exception for zero");
     }
 
@@ -30,16 +26,14 @@ class VectorTests {
      * Test method for {@link primitives.Vector#Vector(Double3)}  .
      */
     @Test
-    void vectorConstructor2() {
-        try{
-            Double3 vectorVals = new Double3(1, 1, 1);
-            Vector tmp = new Vector(vectorVals);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct Vector");
-        }
-        Double3 vectorVals = new Double3(0, 0, 0);
+    void vectorConstructorDouble3() {
+        Double3 vectorVals1 = new Double3(1, 1, 1);
+        assertDoesNotThrow(()-> new Vector(vectorVals1),
+                "Failed constructing a correct Vector");
+
+        Double3 vectorVals2 = new Double3(0, 0, 0);
         assertThrows(IllegalArgumentException.class, //
-                () -> new Vector(vectorVals), //
+                () -> new Vector(vectorVals2), //
                 "Vector constructor should throw exception for zero");
     }
 
@@ -79,11 +73,10 @@ class VectorTests {
      */
     @Test
     void crossProduct() {
-        try { // test zero vector
-            v1.crossProduct(v2);
-            fail("ERROR: crossProduct() for parallel vectors does not throw an exception");
-        } catch (Exception e) {
-        }
+        assertThrows(IllegalArgumentException.class,
+                ()-> v1.crossProduct(v2),
+                "ERROR: crossProduct() for parallel vectors does not throw an exception");
+
         Vector vr = v1.crossProduct(v3);
         assertTrue(isZero(vr.length() - v1.length() * v3.length()), "ERROR: crossProduct() wrong result length");
         assertTrue((isZero(vr.dotProduct(v1)) || !isZero(vr.dotProduct(v3))), "ERROR: crossProduct() result is not orthogonal to its operands");
@@ -115,11 +108,9 @@ class VectorTests {
         Vector v = new Vector(1, 2, 3);
         Vector u = v.normalize();
         assertTrue(isZero(u.length() - 1), "ERROR: the normalized vector is not a unit vector");
-        try { // test that the vectors are co-lined
-            v.crossProduct(u);
-            out.println("ERROR: the normalized vector is not parallel to the original one");
-        } catch (Exception e) {
-        }
+        assertThrows(IllegalArgumentException.class, ()-> v.crossProduct(u),
+                "ERROR: the normalized vector is not parallel to the original one");
+
         if (v.dotProduct(u) < 0)
             out.println("ERROR: the normalized vector is opposite to the original one");
     }

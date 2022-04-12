@@ -19,11 +19,8 @@ class CylinderTests {
      */
     @Test
     void Cylinder(){
-        try{
-            Cylinder c = new Cylinder(3, ray, 5);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct Cylinder");
-        }
+        assertDoesNotThrow(()->new Cylinder(3, ray, 5),
+                "Failed constructing a correct Cylinder");
     }
 
     /**

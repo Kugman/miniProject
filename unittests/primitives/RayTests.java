@@ -18,11 +18,7 @@ class RayTests {
      */
     @Test
     void Ray(){
-        try {
-            Ray tmp = new Ray(point, vector);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct Ray");
-        }
+        assertDoesNotThrow(()->new Ray(point, vector), "Failed constructing a correct Ray");
     }
 
     /**

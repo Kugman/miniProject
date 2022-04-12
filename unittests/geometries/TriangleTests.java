@@ -20,11 +20,8 @@ class TriangleTests {
      */
     @Test
     void Triangle() {
-        try {
-            Triangle triangle = new Triangle(point1, point2, point3);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct triangle");
-        }
+        assertDoesNotThrow(()-> new Triangle(point1, point2, point3),
+                "Failed constructing a correct triangle");
     }
 
     /**

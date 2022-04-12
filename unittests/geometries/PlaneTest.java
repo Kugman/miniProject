@@ -17,24 +17,21 @@ class PlaneTest {
      * Test method for {@link Plane#Plane(Point, Point, Point)}.
      */
     @Test
-    public void testConstructor(){
-        try{
-            Plane p = new Plane(new Point(1, 1, 1), new Point(1, 2, 3), new Point(2, 2, 2));
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct plane");
-        }
+    public void testConstructor3Point(){
+        assertDoesNotThrow(()->new Plane(
+                        new Point(1, 1, 1),
+                        new Point(1, 2, 3),
+                        new Point(2, 2, 2)),
+                "Failed constructing a correct plane");
     }
 
     /**
      * Test method for {@link Plane#Plane(Point, Vector)}.
      */
     @Test
-    public void testConstructor2(){
-        try{
-            Plane p = new Plane(new Point(1, 1, 1), new Vector(1, 1, 1));
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct plane");
-        }
+    public void testConstructorPointVector(){
+        assertDoesNotThrow(()->new Plane(new Point(1, 1, 1), new Vector(1, 1, 1)),
+                "Failed constructing a correct plane");
     }
 
     /**
@@ -70,10 +67,13 @@ class PlaneTest {
         assertTrue( isZero(v1.dotProduct(n)),"ERROR: Bad normal to plane");
         assertTrue( isZero(v2.dotProduct(n)),"ERROR: Bad normal to plane");
         assertTrue( isZero(v3.dotProduct(n)),"ERROR: Bad normal to plane");
-        try {
-            new Plane(new Point(1,2,3),new Point(2,4,6),new Point(4,8,12)).getNormal(point1);
-            fail("GetNormal() should throw an exception, but it failed");
-        } catch (Exception e) {}
+        assertThrows(IllegalArgumentException.class,
+                ()->new Plane(
+                        new Point(1,2,3),
+                        new Point(2,4,6),
+                        new Point(4,8,12)
+                ).getNormal(point1),
+                "GetNormal() should throw an exception, but it failed");
 
     }
 

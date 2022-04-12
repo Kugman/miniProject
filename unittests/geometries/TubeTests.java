@@ -21,11 +21,8 @@ class TubeTests {
      */
     @Test
     void Tube(){
-        try {
-            Tube t = new Tube(radius, ray);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct tube");
-        }
+        assertDoesNotThrow(()-> new Tube(radius, ray),
+                "Failed constructing a correct tube");
     }
 
     /**

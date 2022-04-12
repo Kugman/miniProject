@@ -19,11 +19,8 @@ class SphereTests {
      */
     @Test
     void Sphere() {
-        try{
-            Sphere p = new Sphere(new Point(1, 1, 1),3);
-        }catch (IllegalArgumentException e) {
-            fail("Failed constructing a correct sphere");
-        }
+        assertDoesNotThrow(()-> new Sphere(new Point(1, 1, 1),3),
+                "Failed constructing a correct sphere");
     }
 
 
