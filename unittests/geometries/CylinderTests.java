@@ -60,6 +60,13 @@ class CylinderTests {
      */
     @Test
     void testToString(){
-        System.out.println("the cylinder is: " + cylinder);
+        assertEquals("Cylinder {" +
+                        "Ray: {" +
+                        "Point: {(1.0,2.0,3.0)}" +
+                        "Vector: {(0.5773502691896258,0.5773502691896258,0.5773502691896258)}}, " +
+                        "radius: 3.0, " +
+                        "height: 5.0" +
+                        "}"
+        , cylinder.toString());
     }
 }

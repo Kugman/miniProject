@@ -78,6 +78,11 @@ class TubeTests {
      */
     @Test
     void testToString() {
-        System.out.println("the tube is: " + tube.toString());
+        assertEquals("Tube: {" +
+                        "Ray: {" +
+                        "Point: {(1.0,1.0,1.0)}" +
+                        "Vector: {(0.6666666666666666,0.6666666666666666,0.3333333333333333)}}, " +
+                        "Radius: 3.5}",
+                tube.toString());
     }
 }

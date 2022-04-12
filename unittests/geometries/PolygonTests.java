@@ -116,6 +116,10 @@ class PolygonTests {
      */
     @Test
     void testToString() {
-        System.out.println("the polygon is: " + pl.toString());
+        assertEquals("Poligon: {" +
+                        "[Point: {(0.0,0.0,1.0)}, Point: {(1.0,0.0,0.0)}, Point: {(0.0,1.0,0.0)}, Point: {(-1.0,1.0,1.0)}], " +
+                        "Plane{Point: {(0.0,0.0,1.0)}, Vector: {(0.5773502691896258,0.5773502691896258,0.5773502691896258)}}" +
+                        "}",
+                pl.toString());
     }
 }

@@ -56,7 +56,8 @@ class TriangleTests {
      */
     @Test
     void testToString() {
-        System.out.println("the triangle is: " + triangle.toString());
+        assertEquals("Triangle: {[Point: {(1.0,0.0,0.0)}, Point: {(1.0,1.0,0.0)}, Point: {(1.0,1.0,1.0)}]}",
+                triangle.toString());
     }
 
     @Test

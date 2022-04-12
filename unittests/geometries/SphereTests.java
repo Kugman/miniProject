@@ -66,7 +66,8 @@ class SphereTests {
      */
     @Test
     void testToString() {
-        System.out.println("the sphere is: " + sphere.toString());
+        assertEquals("Sphere: {Point: {(1.0,1.0,1.0)}, Radius: 3.0}" ,
+                sphere.toString());
     }
 
     /**

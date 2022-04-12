@@ -46,7 +46,11 @@ class RayTests {
      */
     @Test
     void testToString() {
-        System.out.println("the ray is: " + ray.toString());
+        assertEquals("Ray: {" +
+                        "Point: {(1.0,2.0,3.0)}" +
+                        "Vector: {(0.5773502691896258,0.5773502691896258,0.5773502691896258)}" +
+                        "}",
+                ray.toString());
     }
 
     /**

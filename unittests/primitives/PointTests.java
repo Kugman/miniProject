@@ -56,7 +56,7 @@ class PointTests {
      */
     @Test
     void testToString() {
-        System.out.println("the point is: " + p1);
+        assertEquals("Point: {(1.0,2.0,3.0)}", p1.toString());
     }
 
     /**

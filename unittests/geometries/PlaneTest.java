@@ -82,6 +82,10 @@ class PlaneTest {
      */
     @Test
     void testToString() {
-        System.out.println("the plane is: " + plane);
+        assertEquals("Plane{" +
+                        "Point: {(1.0,2.0,0.0)}, " +
+                        "Vector: {(0.6804138174397716,0.6804138174397716,0.2721655269759087)}" +
+                        "}",
+        plane.toString());
     }
 }

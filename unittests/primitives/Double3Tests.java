@@ -47,7 +47,7 @@ class Double3Tests {
      */
     @Test
     void toStringTest() {
-        System.out.println("the Double3 object is: " + ob.toString());
+        assertEquals("(1.5,1.0,1.0)", ob.toString());
     }
 
     /**
