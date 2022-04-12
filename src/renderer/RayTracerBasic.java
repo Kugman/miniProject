@@ -11,6 +11,9 @@ import static primitives.Util.alignZero;
 public class RayTracerBasic extends RayTracerBase{
 
     private static final double DELTA = 0.1;
+    private static final int MAX_CALC_COLOR_LEVEL = 10;
+    private static final double MIN_CALC_COLOR_K = 0.001;
+
 
     /**
      * @param scene initialize field scene
@@ -24,6 +27,44 @@ public class RayTracerBasic extends RayTracerBase{
                 .add(point.geometry.getEmission())
                 .add(calcLocalEffects(point, ray));
         return c;
+    }
+
+    private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, double k) {
+        Color color = Color.BLACK;
+        Vector n = gp.geometry.getNormal(gp.point);
+        Vector inRay = ray.getDirectionVector();
+
+        Ray reflectedRay = constructReflectedRay(n, gp.point, inRay);
+        GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
+        double kr = gp.geometry.getMaterial().kR, kkr = k * kr;
+        if (kkr > MIN_CALC_COLOR_K)
+            color = color.add(calcColor(reflectedPoint, reflectedRay)
+                .scale(gp.geometry.getMaterial().kR));
+
+        Ray refractedRay = constructRefractedRay(gp.point, inRay);
+        GeoPoint refractedPoint = findClosestIntersection(refractedRay);
+        double kt = gp.geometry.getMaterial().kR, kkt = k * kt;
+        if (kkt > MIN_CALC_COLOR_K)
+            color = color.add(calcColor(refractedPoint, refractedRay)
+                .scale(gp.geometry.getMaterial().kT));
+
+        return color;
+    }
+
+    private Ray constructRefractedRay(Point point, Vector inRay) {
+        return new Ray(point, inRay);
+    }
+
+    private GeoPoint findClosestIntersection(Ray ray) {
+        var intersactions = scene.geometries.findGeoIntersections(ray);
+        if (intersactions == null) return null;
+        GeoPoint closestIntersection = ray.findClosestGeoPoint(intersactions);
+        return closestIntersection;
+    }
+
+    private Ray constructReflectedRay(Vector n, Point point, Vector inRay) {
+        Vector r = inRay.subtract(n.scale(2 * inRay.dotProduct(n)));
+        return new Ray(point, r);
     }
 
     private Color calcLocalEffects(GeoPoint point, Ray ray) {
