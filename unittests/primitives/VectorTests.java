@@ -52,15 +52,6 @@ class VectorTests {
         assertEquals(res, v1.add(v3), "ERROR: add() return wrong value");
     }
 
-    /**
-     * Test method for {@link Vector#toString()} .
-     */
-    @Test
-    void testToString() {
-        System.out.println("the first vector is: " + v1);
-        System.out.println("the second vector is: " + v2);
-        System.out.println("the third vector is: " + v3);
-    }
 
     /**
      * Test method for {@link primitives.Vector#scale(double)}.
@@ -104,7 +95,7 @@ class VectorTests {
     @Test
     void lengthSquared() {
         // ============ Equivalence Partitions Tests ==============
-        assertTrue(isZero(v1.lengthSquared() - 14), "ERROR: lengthSquared() wrong value");
+        assertEquals(14, v1.lengthSquared(), 0.001, "ERROR: lengthSquared() wrong value");
     }
 
     /**

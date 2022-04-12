@@ -97,7 +97,7 @@ class SphereTests {
         assertEquals(result3.get(0),new Point(2,0,0));
 
         // TC04: Ray starts after the sphere (0 points)
-        assertEquals( null, sphere.findIntersections(new Ray(new Point(2.2, 0, 0), new Vector(1, 1, 0))),"Ray's line out of sphere");
+        assertNull(sphere.findIntersections(new Ray(new Point(2.2, 0, 0), new Vector(1, 1, 0))),"Ray's line out of sphere");
 
         // =============== Boundary Values Tests ==================
 

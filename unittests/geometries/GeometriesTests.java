@@ -63,31 +63,39 @@ class GeometriesTests {
      */
     @Test
     void findIntersections() {
-        Geometries g = new Geometries();
+        Geometries geometries = new Geometries();
 
         // =============== Boundary Values Tests ==================
         //Empty collection
-        assertNull(  g.findIntersections(new Ray(new Point(3, 1, 0.5), new Vector(1, 1, 0))),"list Empty");
+        assertNull(  geometries.findIntersections(new Ray(new Point(3, 1, 0.5), new Vector(1, 1, 0))),"list Empty");
 
-        g.intersectables.add(new Triangle(new Point(-1, 0.5, -6), new Point(-1, 0, -6), new Point(2, 0, -6)));
-        g.intersectables.add(new Plane(new Point(1, 0, -4), new Vector (0, 0, 1)));
-        g.intersectables.add(new Sphere(new Point(0, 0, 1), 5));
+        geometries.add(
+                new Triangle(
+                        new Point(-1, 0.5, -6),
+                        new Point(-1, 0, -6),
+                        new Point(2, 0, -6)),
+                new Plane(
+                        new Point(1, 0, -4),
+                        new Vector (0, 0, 1)),
+                new Sphere(
+                        new Point(0, 0, 1), 5)
+                );
 
         //No shape intersects with a body
-        assertNull( g.findIntersections(new Ray(new Point(0,0,8), new Vector(1,0, 0))),"Ray not included in the plane");
+        assertNull( geometries.findIntersections(new Ray(new Point(0,0,8), new Vector(1,0, 0))),"Ray not included in the plane");
 
         //One shape intersects
-        List<Point> l = g.findIntersections(new Ray(new Point(6,-6,4), new Vector(-12,12,0)));
+        List<Point> l = geometries.findIntersections(new Ray(new Point(6,-6,4), new Vector(-12,12,0)));
         assertEquals( 2, l.size(),"Ray not included in the plane");
 
         //All shapes intersect
-        l = g.findIntersections(new Ray(new Point(-0.7, 0.2, -8), new Vector(0, 0, 1)));
+        l = geometries.findIntersections(new Ray(new Point(-0.7, 0.2, -8), new Vector(0, 0, 1)));
         assertEquals( 4, l.size(),"Ray not included in the plane");
 
 
         // ============ Equivalence Partitions Tests ==============
         //Some shapes but not all intersects
-        l = g.findIntersections(new Ray(new Point(1, 0, -8), new Vector(0, 0, 1)));
+        l = geometries.findIntersections(new Ray(new Point(1, 0, -8), new Vector(0, 0, 1)));
         assertEquals( 3, l.size(),"Ray not included in the plane");
 
     }

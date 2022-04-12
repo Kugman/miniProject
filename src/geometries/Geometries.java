@@ -3,31 +3,31 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Geometries extends Intersectable{
 
-    List<Intersectable> intersectables = null;
+    List<Intersectable> geometries = null;
 
     public Geometries(){
-        intersectables = new LinkedList<>();
+        geometries = new LinkedList<>();
     }
 
-    public Geometries(Intersectable...geometries){
-        this.intersectables = new LinkedList<>();
+    public Geometries(Intersectable... geometries){
+        this.geometries = new LinkedList<>();
         add(geometries);
     }
 
-    public void add(Intersectable...geometries){
-        for (Intersectable item : geometries)
-            this.intersectables.add(item);
+    public void add(Intersectable... geometries){
+        Collections.addAll(this.geometries, geometries);
     }
 
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> result = null;
-        for (Intersectable item : this.intersectables) {
+        for (Intersectable item : this.geometries) {
             // Activates the function for each shape according to its  implementation
             List<Point> itemPoints = item.findIntersections(ray);
             //if there is intersection
@@ -42,7 +42,7 @@ public class Geometries extends Intersectable{
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
         List<GeoPoint> result = null;
-        for (Intersectable item : this.intersectables) {
+        for (Intersectable item : this.geometries) {
             // Activates the function for each shape according to its  implementation
             List<GeoPoint> itemPoints = item.findGeoIntersectionsHelper(ray, maxDistance);
             //if there is intersection
