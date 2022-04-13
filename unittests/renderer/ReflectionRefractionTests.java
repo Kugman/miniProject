@@ -108,4 +108,39 @@ public class ReflectionRefractionTests {
 				.renderImage() //
 				.writeToImage();
 	}
+
+	@Test
+	public void myTest() {
+		Scene scene = new Scene("myTest scene");
+		Camera cam=(new Camera(
+				new Point(0, 0, -1000),
+				new Vector(0, 0, 1),
+				new Vector(0, 1, 0))
+		).setVPDistance(1000).setVPSize(200, 200);
+
+		scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), new Double3(0.15)));
+		scene.geometries.add(
+						new Triangle(new Point(1500, 1500, 1500),new Point(-1500, -1500, 1500), new Point(670, -670, -3000))
+								.setEmission(new Color(20, 250, 250))
+								.setMaterial(new Material().setKD(0).setKS(0).setNShininess(0).setKT(0).setKR(1)),
+						new Sphere(new Point(0, 0, 50), 50)
+								.setEmission(new Color(java.awt.Color.BLUE))
+								.setMaterial(new Material().setKD(0.4).setKS(0.3).setNShininess(100).setKT(0.3)),
+						new Sphere(new Point(0, 0, 50),25)
+								.setEmission(new Color(java.awt.Color.RED))
+								.setMaterial(new Material().setKD(0.5).setKS(0.5).setNShininess(100)));
+
+		scene.lights.add(new SpotLight(new Color(700, 400, 400)
+				,new Point(60, -50, 0),  new Vector(0, 0, 1))
+				.setKC(1).setKL(4E-5).setKQ(2E-7));
+		scene.lights.add( new DirectionalLight(new Color(500, 300, 0), new Vector(1, -1, 1)));
+
+		ImageWriter imageWriter = new ImageWriter("reflectionMyTest", 600, 600);
+
+		cam.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene)) //
+				.renderImage() //
+				.writeToImage();
+	}
+
 }
