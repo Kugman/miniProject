@@ -10,7 +10,7 @@ import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase{
 
-    private static final double DELTA = 0.1;
+//    private static final double DELTA = 0.1;
     private static final double INITIAL_K = 1.0;
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
@@ -47,11 +47,11 @@ public class RayTracerBasic extends RayTracerBase{
 
         double kkr = k * material.kR;
         if (kkr > MIN_CALC_COLOR_K)
-            color = calcGlobalEffects(constructReflectedRay(n, gp.point, v), level, material.kR, kkr);
+            color = calcGlobalEffects(constructReflectedRay(gp.point, v, n), level, material.kR, kkr);
 
         double kkt = k * material.kT;
         if (kkt > MIN_CALC_COLOR_K)
-            color = color.add(calcGlobalEffects(constructRefractedRay(n, gp.point, v), level, material.kT, kkt));
+            color = color.add(calcGlobalEffects(constructRefractedRay(gp.point, v, n), level, material.kT, kkt));
 
         return color;
     }
@@ -79,13 +79,13 @@ public class RayTracerBasic extends RayTracerBase{
         return color;
     }
 
-    private Ray constructRefractedRay(Vector v, Point point, Vector inRay) {
-        return new Ray(point, inRay);
+    private Ray constructRefractedRay(Point point, Vector inRay, Vector n) {
+        return new Ray(point, inRay, n);
     }
 
-    private Ray constructReflectedRay(Vector n, Point point, Vector inRay) {
+    private Ray constructReflectedRay(Point point, Vector inRay, Vector n) {
         Vector r = inRay.subtract(n.scale(2 * inRay.dotProduct(n)));
-        return new Ray(point, r);
+        return new Ray(point, r, n);
     }
 
     private double calcSpecular(double nl, double ks, Vector l, Vector n, Vector v, int nShininess) {
@@ -125,13 +125,7 @@ public class RayTracerBasic extends RayTracerBase{
 
     private boolean unshaded(LightSource lightSource, GeoPoint gp, Vector l, Vector n, double nv) {
         Vector lightDirection = l.scale(-1);
-
-//        Vector epsVector = n.scale(n.dotProduct(lightDirection) > 0? DELTA : -DELTA);
-        Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
-        Point point = gp.point.add(epsVector);
-        Ray lightRay = new Ray(point,lightDirection);
-
-        // if(true) return false;
+        Ray lightRay = new Ray(gp.point, lightDirection, n);
         List<GeoPoint> intersections = scene.geometries
                 .findGeoIntersections(lightRay);//, lightSource.getDistance(gp.point));
         if(intersections == null) return true;

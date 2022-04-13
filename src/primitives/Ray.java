@@ -14,9 +14,16 @@ public class Ray {
 
     private final Point startPoint;
     private final Vector directionVector;
+    private static final double DELTA = 0.1;
 
     public Ray(Point startPoint, Vector directionVector) {
         this.startPoint = startPoint;
+        this.directionVector = directionVector.normalize();
+    }
+
+    public Ray(Point startPoint, Vector directionVector, Vector n) {
+        Vector move = n.scale(n.dotProduct(directionVector) > 0 ? DELTA : - DELTA);
+        this.startPoint = startPoint.add(move);
         this.directionVector = directionVector.normalize();
     }
 
