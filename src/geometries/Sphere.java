@@ -111,11 +111,21 @@ public class Sphere extends Geometry {
 		//in case of 2 intersection points
 		if(t1 > 0 && t2 > 0 && (alignZero(t1 - maxDistance) <= 0 &&
 				alignZero(t2 - maxDistance) <= 0)) //the first point and the second point
-			return List.of(new GeoPoint(this, ray.getPoint(t1)),
-					new GeoPoint(this, ray.getPoint(t2)));
+			try {
+				return List.of(new GeoPoint(this, ray.getPoint(t1)),
+						new GeoPoint(this, ray.getPoint(t2)));
+			} catch (IllegalArgumentException e){
+				return null;
+			}
+
 
 		//in case of 1 intersection points
-		if(t1 > 0 && alignZero(t1 - maxDistance) <= 0) return List.of(new GeoPoint(this, ray.getPoint(t1)));
+		if(t1 > 0 && alignZero(t1 - maxDistance) <= 0)
+			try {
+				return List.of(new GeoPoint(this, ray.getPoint(t1)));
+			} catch (IllegalArgumentException e){
+				return null;
+			}
 
 		//in case of 1 intersection points
 		if(t2 > 0 && alignZero(t2 - maxDistance) <= 0) {
