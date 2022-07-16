@@ -1,9 +1,6 @@
 package renderer;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -208,5 +205,92 @@ public class Camera {
         if(this.imageWriter == null) throw new MissingResourceException("missing value", "ImageWriter", "imageWriter");
         this.imageWriter.writeToImage();
     }
+
+//    ----------------- MP1---------------
+    public Point getCenterPij(Point p, double Rx, double Ry, int i, int j, int nX, int nY){
+        double tempY = ((i - nY / 2.0) * Ry + Ry/2.0);
+        double tempX = ((j - nX / 2.0) * Rx + Rx/2.0);
+
+        if(!Util.isZero(tempX))
+            p = p.add(directionRight.scale(tempX));
+
+        if(!Util.isZero(tempY))
+            p = p.add(directionUp.scale(-tempY));
+
+        return p;
+    }
+
+    public Point getCenterPij(int nX, int nY, int i, int j){
+        //the center point of the center pixel
+        Point Pc = location.add(directionTo.scale(distance));
+        //width of pixel
+        double Rx = width / nX;
+        //height of pixel
+        double Ry = height / nY;
+
+        return getCenterPij(Pc,Rx,Ry,i,j,nX,nY);
+    }
+
+    public double getRx(int nX){
+        return width / nX;
+    }
+
+    public double getRy(int nY){
+        return width / nY;
+    }
+
+    public List<Ray> cornersColors(int nX, int nY, int col, int row){
+        List<Point> points = new LinkedList<>();
+        List<Ray> rays = new LinkedList<>();
+
+        Point pc = getCenterPij(nX, nY, col, row);
+
+        double Rx = getRx(nX); //width of pixel
+        double Ry = getRy(nY); //height of pixel
+
+        points.add(pc.add(directionRight.scale( - Rx / 2)).add(directionUp.scale(Ry / 2)));
+        points.add(pc.add(directionRight.scale( Rx / 2)).add(directionUp.scale(Ry / 2)));
+        points.add(pc.add(directionRight.scale( - Rx / 2)).add(directionUp.scale(- Ry / 2)));
+        points.add(pc.add(directionRight.scale( Rx / 2)).add(directionUp.scale(- Ry / 2)));
+
+        for (var point : points) rays.add(new Ray(location, point.subtract(location)));
+        return rays;
+    }
+
+    public List<Ray> centersColors(Point pc, double Rx, double Ry){
+        List<Point> points = new LinkedList<>();
+        List<Ray> rays = new LinkedList<>();
+
+        points.add(pc.add(directionUp.scale(Ry/2)));
+        points.add(pc.add(directionRight.scale(-Rx/2)));
+        points.add(pc);
+        points.add(pc.add(directionRight.scale(Rx/2)));
+        points.add(pc.add(directionUp.scale(-Ry/2)));
+
+        for(var p : points) rays.add(new Ray(location, p.subtract(location)));
+        return rays;
+    }
+
+    int grids = 0;
+    public void setImprovement(int n)
+    {
+        grids = n;
+    }
+
+    public Ray constructRayGrid(int nX, int nY, int x, int y, int j, int i, int numbergrid) {
+
+        //next lines for calculate point to ray :
+        Point Pc = getCenterPij(nX, nY, x, y); //center of pixel = new pc
+
+        double Rx = width / nX / numbergrid;//width of pixel
+        double Ry = height / nY / numbergrid;//height of pixel
+
+        //p is a point on the grid of the pixel
+        Point p = getCenterPij(Pc,Rx,Ry,i,j,numbergrid,numbergrid);
+
+        //make ray from p0 to the center
+        return new Ray(location,p.subtract(location));
+    }
+
 
 }
