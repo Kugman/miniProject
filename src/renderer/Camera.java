@@ -188,12 +188,18 @@ public class Camera {
 
         for (int i = 0; i < nY; ++i)
             for (int j = 0; j < nX; ++j)
-                imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(nX, nY, j, i)));
+                if(grids <= 1) imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(nX, nY, j, i)));
+                else imageWriter.writePixel(j, i, gridPixel(nX, nY, j, i));
         return this;
     }
 
     public void printGrid(int interval, Color color){
         if(this.imageWriter == null) throw new MissingResourceException("missing value", "ImageWriter", "imageWriter");
+
+//        try{
+        renderImage();
+//        }catch (Exception e) {return;}
+
         for (int i = 0; i < imageWriter.getNx(); i++)
             for (int j = 0; j < imageWriter.getNy(); j++) {
                 if (i % interval == 0) this.imageWriter.writePixel(i, j, color);
@@ -271,9 +277,22 @@ public class Camera {
         return rays;
     }
 
+    private Color gridPixel(int nX,int nY,int x,int y){
+
+        List<Ray> rays = new LinkedList<Ray>();
+        for (int i = 0; i < grids; i++)
+            for (int j = 0; j < grids; j++)
+                rays.add(constructRayGrid(nX, nY, x, y, j, i, grids));
+
+        Color color = Color.BLACK;
+        for (var ray : rays)
+            color = color.add(rayTracerBase.traceRay(ray));
+
+        return color;
+    }
+
     int grids = 0;
-    public void setImprovement(int n)
-    {
+    public void setImprovement(int n) {
         grids = n;
     }
 
